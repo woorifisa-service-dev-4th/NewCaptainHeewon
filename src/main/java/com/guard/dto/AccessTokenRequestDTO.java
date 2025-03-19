@@ -11,12 +11,9 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class ClientAuthRequest {
+public class AccessTokenRequestDTO {
 	private String clientId;
-
 	private String clientSecret;
-
 	private String redirectUri;
-
-
+	private String code;
 }
