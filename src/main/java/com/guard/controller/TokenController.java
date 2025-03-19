@@ -1,40 +1,36 @@
 package com.guard.controller;
 
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+import com.guard.service.AuthCodeService;
+import com.guard.utils.JwtUtil;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
-import io.jsonwebtoken.Jwts;
 
-
-import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping("/api/auth")
 public class TokenController {
 
-	private final ConcurrentHashMap<String, String> authCodeStore = new ConcurrentHashMap<>();
 
-	private static final String SECRET_KEY = "my-secret-key-my-secret-key-my-secret-key"; // 충분한 길이의 비밀키 권장
+	private final JwtUtil jwtUtil;
+	private final AuthCodeService authCodeService;
+
+	// 생성자 주입으로 JwtUtil을 주입받음
+	public TokenController(JwtUtil jwtUtil,AuthCodeService authCodeService) {
+		this.jwtUtil = jwtUtil;
+		this.authCodeService = authCodeService;
+	}
 
 	@PostMapping("/token")
 	public ResponseEntity<String> getToken(@RequestParam String code) {
 		// Authorization Code 검증
-		if (!authCodeStore.containsValue(code)) {
+		if (!authCodeService.validateCode(code)) {
 			return ResponseEntity.status(400).body("Invalid authorization code");
 		}
-
-		// Access Token 생성 (JWT)
-
-		String accessToken = Jwts.builder()
-				.setSubject("user")
-				.setIssuedAt(new Date())
-				.setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // 1시간 유효
-				.signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()), SignatureAlgorithm.HS256)
-				.compact();
+		// JwtUtil을 사용하여 Access Token 생성
+		String accessToken = jwtUtil.generateToken("user", List.of("ROLE_USER"));
 
 		return ResponseEntity.ok("Access Token: " + accessToken);
 	}
 }
-
