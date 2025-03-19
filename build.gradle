@@ -50,7 +50,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     // SpringDoc (Swagger 문서 자동화)
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.15'
 
     // 개발 편의성 도구
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

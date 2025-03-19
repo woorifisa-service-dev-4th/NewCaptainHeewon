@@ -21,7 +21,7 @@ spring:
         format_sql: true
 
 jwt:
-  secret: mySuperSecretKeyForJWTAuth
+  secret: my-very-secret-key-that-is-long-enough
   expiration: 3600
 
 logging:
