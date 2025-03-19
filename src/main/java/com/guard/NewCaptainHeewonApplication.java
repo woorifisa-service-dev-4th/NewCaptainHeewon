@@ -9,5 +9,4 @@ public class NewCaptainHeewonApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(NewCaptainHeewonApplication.class, args);
 	}
-
 }
