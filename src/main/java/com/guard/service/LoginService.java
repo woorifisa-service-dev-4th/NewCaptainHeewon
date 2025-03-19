@@ -10,7 +10,7 @@ public class LoginService {
     // 사용자 인증 메소드
     public String authenticate(String username, String password) {
         // 사용자 인증 로직 (임시로 인증 성공 가정)
-        if ("admin".equals(username) && "password".equals(password)) {
+        if ("username".equals(username) && "password".equals(password)) {
             // 인증 성공 시 Authorization Code 생성
             return generateAuthorizationCode();
         }
