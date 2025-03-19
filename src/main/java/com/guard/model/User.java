@@ -22,4 +22,7 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 
+	@ManyToOne
+	@JoinColumn(name = "client_id") // 외래 키 설정
+	private Client client;
 }
