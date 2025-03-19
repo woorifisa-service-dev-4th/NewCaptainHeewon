@@ -17,7 +17,6 @@ public class ProtectedController {
 
 	@GetMapping("/valid")
 	public ResponseEntity<String> getProtectedData(@RequestHeader("Authorization") String token) {
-		// "Bearer " 접두사 제거
 		token = token.replace("Bearer ", "");
 
 		// JwtUtil을 사용하여 토큰 검증 (유효하면 subject 반환, 아니면 null)
@@ -26,7 +25,6 @@ public class ProtectedController {
 		if (subject == null) {
 			return ResponseEntity.status(401).body("Invalid token");
 		}
-
 		return ResponseEntity.ok("Protected Data Accessed! Subject: " + subject);
 	}
 }

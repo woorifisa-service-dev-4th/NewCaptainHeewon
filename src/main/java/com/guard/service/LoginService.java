@@ -1,40 +1,48 @@
 package com.guard.service;
 
+import com.guard.dto.AuthResponseDTO;
+import com.guard.dto.LoginRequestDTO;
 import com.guard.model.User;
+import com.guard.repository.AuthCodeRepository;
 import com.guard.repository.UserRepository;
+import com.guard.utils.JwtUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.UUID;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class LoginService {
 
-    @Autowired
-    private UserRepository userRepository; // DB에서 사용자 조회
+	private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder; // 비밀번호 암호화
+	private final UserRepository userRepository;
 
-    // 사용자 인증 메소드
-    public String authenticate(String username, String password) {
-        // DB에서 사용자 조회
-        User user = userRepository.findByUsername(username);
+	private final AuthCodeRepository authCodeRepository;
 
-        // 사용자 존재 여부 확인
-        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-            // 인증 성공 시 Authorization Code 생성
-            return generateAuthorizationCode();
-        }
+	public String login(LoginRequestDTO request) {
+		Authentication authentication = authenticationManager.authenticate(
+			new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+		);
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 
-        // 인증 실패 시 null 반환
-        return null;
-    }
+		User user = userRepository.findByUsername(userDetails.getUsername())
+			.orElseThrow(() -> new RuntimeException("User not found"));
 
-    // Authorization Code 생성
-    private String generateAuthorizationCode() {
-        // 임시로 UUID를 사용하여 Authorization Code 생성
-        return UUID.randomUUID().toString();
-    }
+		String authorizationCode = UUID.randomUUID().toString();
+
+		 authCodeRepository.saveAuthCode(authorizationCode,user.getUsername());
+
+		 return authorizationCode;
+	}
 }
