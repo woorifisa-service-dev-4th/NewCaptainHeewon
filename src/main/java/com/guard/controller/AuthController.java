@@ -1,14 +1,10 @@
 package com.guard.controller;
 
-<<<<<<< HEAD
 import com.guard.service.LoginService;
-import org.springframework.beans.factory.annotation.Autowired;
-=======
 import com.guard.dto.ClientAuthRequest;
 import com.guard.service.AuthCodeService;
 
 import org.springframework.http.HttpStatus;
->>>>>>> main
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
@@ -36,9 +32,8 @@ public class AuthController {
 	public ResponseEntity<?> authorize(@RequestBody ClientAuthRequest request, HttpServletResponse response) {
 		try {
 			// 클라이언트 검증
-			boolean isValid = clientService.validateClient(
-				request.getClientId(), request.getClientSecret(), request.getRedirectUri()
-			);
+			boolean isValid = clientService.validateClient(request.getClientId(), request.getClientSecret(),
+				request.getRedirectUri());
 
 			if (!isValid) {
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid client credentials");
@@ -48,12 +43,11 @@ public class AuthController {
 			response.sendRedirect(redirectUrl);
 
 			return ResponseEntity.ok().build();
-		}catch (IOException e) {
+		} catch (IOException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 				.body("Redirection failed: " + e.getMessage());
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-				.body("Unexpected error: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error: " + e.getMessage());
 		}
 	}
 
@@ -66,7 +60,7 @@ public class AuthController {
 
 			if (authorizationCode != null) {
 				// Authorization Code 저장 (임시 저장소)
-			authCodeService.saveCode(username, authorizationCode);
+				authCodeService.saveCode(username, authorizationCode);
 
 				// 성공적으로 인증되었을 경우, Authorization Code 반환
 				return ResponseEntity.ok("Authorization Code: " + authorizationCode);
