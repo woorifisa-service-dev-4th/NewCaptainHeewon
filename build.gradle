@@ -1,0 +1,68 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.12'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'Obsedian_BE'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo1.maven.org/maven2/" } // Maven Repository 직접 지정
+}
+
+
+dependencies {
+    // Spring Boot 기본 스타터
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-json'
+
+    // OAuth2 & Security 관련
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+// JJWT 구현체 (런타임 전용)
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+// JJWT Jackson 모듈 (런타임 전용)
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation 'org.springframework.security:spring-security-oauth2-authorization-server:1.2.3'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
+
+    // Lombok (컴파일 시 의존성 처리)
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // SpringDoc (Swagger 문서 자동화)
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+
+    // 개발 편의성 도구
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // 데이터베이스 (MySQL)
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // 테스트 관련 의존성
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

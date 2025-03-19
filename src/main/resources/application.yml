@@ -1,0 +1,30 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: auth-server
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/authdb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: your_password
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+jwt:
+  secret: mySuperSecretKeyForJWTAuth
+  expiration: 3600
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
