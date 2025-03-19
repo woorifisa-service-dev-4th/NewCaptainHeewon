@@ -10,12 +10,10 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping("/api/auth")
 public class AuthController {
 	private final AuthCodeService authCodeService;
-	// Authorization Code 저장 (임시 저장소)
 
 	public AuthController(AuthCodeService authCodeService) {
 		this.authCodeService = authCodeService;
 	}
-
 
 	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
