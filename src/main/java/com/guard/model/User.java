@@ -2,19 +2,16 @@ package com.guard.model;
 
 
 import lombok.*;
-import org.springframework.data.annotation.Id;
 
 import java.util.Set;
 
 import javax.persistence.*;
-
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -25,11 +22,7 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(
-		name = "user_authoriti/**/es",
-		joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "authority_id")
-	)
-	private Set<Authority> authorities;
+	@ManyToOne
+	@JoinColumn(name = "client_id") // 외래 키 설정
+	private Client client;
 }

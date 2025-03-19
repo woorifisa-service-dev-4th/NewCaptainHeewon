@@ -31,9 +31,4 @@ public class Client {
 	@Column(nullable = false)
 	private String redirectUri;
 
-	@Column(nullable = false)
-	private String scopes;
-
-	@Column(nullable = false)
-	private String grantTypes; // authorization_code, client_credentials 등
 }

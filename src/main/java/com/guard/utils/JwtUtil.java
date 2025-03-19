@@ -19,13 +19,13 @@ public class JwtUtil {
 	public JwtUtil(@Value("${jwt.secret}") String secret,
 		@Value("${jwt.expiration}") long expiration) {
 		this.secretKey = secret;
-		this.expirationTime = expiration * 1000; // 초 -> 밀리초 변환
+		this.expirationTime = expiration * 1000;
 	}
 
 	public String generateToken(String username, List<String> roles) {
 		return Jwts.builder()
 			.setSubject(username)
-			.claim("roles", roles) // 역할 정보 추가
+			.claim("roles", roles)
 			.setIssuedAt(new Date())
 			.setExpiration(new Date(System.currentTimeMillis() + expirationTime))
 			.signWith(Keys.hmacShaKeyFor(secretKey.getBytes()), SignatureAlgorithm.HS256)

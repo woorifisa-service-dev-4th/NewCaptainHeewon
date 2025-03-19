@@ -35,11 +35,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-json'
 
-    // OAuth2 & Security 관련
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-// JJWT 구현체 (런타임 전용)
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-// JJWT Jackson 모듈 (런타임 전용)
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
     implementation 'org.springframework.security:spring-security-oauth2-authorization-server:1.2.3'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
