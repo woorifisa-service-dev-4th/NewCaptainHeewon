@@ -22,11 +22,4 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(
-		name = "user_authoriti/**/es",
-		joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "authority_id")
-	)
-	private Set<Authority> authorities;
 }

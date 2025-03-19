@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 @RestController
-@RequestMapping("/api/protected")
+@RequestMapping("/api/auth")
 public class ProtectedController {
 
 	private final JwtUtil jwtUtil;
@@ -15,7 +15,7 @@ public class ProtectedController {
 		this.jwtUtil = jwtUtil;
 	}
 
-	@GetMapping("/data")
+	@GetMapping("/valid")
 	public ResponseEntity<String> getProtectedData(@RequestHeader("Authorization") String token) {
 		// "Bearer " 접두사 제거
 		token = token.replace("Bearer ", "");
