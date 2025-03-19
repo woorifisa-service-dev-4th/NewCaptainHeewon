@@ -1,5 +1,6 @@
 package com.guard.controller;
 
+import com.guard.service.AuthCodeService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import java.util.UUID;
@@ -8,9 +9,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+	private final AuthCodeService authCodeService;
 
-	// Authorization Code 저장 (임시 저장소)
-	private final ConcurrentHashMap<String, String> authCodeStore = new ConcurrentHashMap<>();
+	public AuthController(AuthCodeService authCodeService) {
+		this.authCodeService = authCodeService;
+	}
 
 	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
@@ -20,7 +23,7 @@ public class AuthController {
 			String authorizationCode = UUID.randomUUID().toString();
 
 			// 사용자별 Authorization Code 저장 (일회성)
-			authCodeStore.put(username, authorizationCode);
+			authCodeService.saveCode(username, authorizationCode);
 
 			return ResponseEntity.ok("Authorization Code: " + authorizationCode);
 		}
