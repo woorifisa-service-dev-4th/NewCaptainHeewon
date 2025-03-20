@@ -5,6 +5,7 @@ import com.guard.service.LoginService;
 import com.guard.dto.ClientAuthRequest;
 
 import org.hibernate.annotations.NotFound;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.webjars.NotFoundException;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +30,8 @@ public class AuthController {
 	private final LoginService loginService;
 
 	private final ClientService clientService;
+	@Value("${JWT_KEY}")
+	private String jwtKey;
 
 	@PostMapping("/authorize")
 	public ResponseEntity<Map<String, String>> authorize(@RequestBody ClientAuthRequest request) {
@@ -43,7 +47,6 @@ public class AuthController {
 		String redirectUrl = "http://localhost:3000/login?client_id=" + request.getClientId()
 			+ "&redirect_uri=" + request.getRedirectUri();
 
-		// 🔥 JSON으로 리디렉트 URL 반환
 		Map<String, String> response = new HashMap<>();
 		response.put("redirectUrl", redirectUrl);
 
@@ -61,4 +64,5 @@ public class AuthController {
 
 		return ResponseEntity.ok(response);
 	}
+
 }
